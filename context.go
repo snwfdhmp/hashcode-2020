@@ -8,11 +8,23 @@ type Context struct {
 }
 
 func (c *Context) CreatePlan() Plan {
-	libScores := make(map[int]int)
+	passedBooks := make([]int, 0) //id of books
+	libSums := make([]int, len(c.Libraries))
+	maxSum := 0
+	maxSumI := 0
 	for i := range c.Libraries {
-		libScores[i] = c.Libraries[i].BookValueSum(c.DayMax)
+		c.Libraries[i].Sort(passedBooks)
+		libSums[i] = c.Libraries[i].BookValueSum(c.DayMax)
+		if libSums[i] > maxSum {
+			maxSum = libSums[i]
+			maxSumI = i
+		}
 	}
 
-	fmt.Printf("%#v\n", libScores)
+	c.Libraries[maxSumI]
+
+	fmt.Printf("%#v\n", c.Libraries)
+	fmt.Printf("Max Library 1 : \n", maxSumI)
+
 	return Plan{}
 }
