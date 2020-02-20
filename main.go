@@ -1,13 +1,18 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 )
 
 var (
-	filename = "c_incunabula.txt"
+	filename = flag.String("file", "a_example.txt", "file")
 )
+
+func init() {
+	flag.Parse()
+}
 
 func main() {
 	if err := run(); err != nil {
@@ -16,13 +21,13 @@ func main() {
 }
 
 func run() error {
-	ctx, err := parseFile("./input/" + filename)
+	ctx, err := parseFile("./input/" + *filename)
 	if err != nil {
 		return err
 	}
 
 	plan := ctx.CreatePlan()
-	file, err := os.OpenFile("./output/sorted_"+filename, os.O_CREATE|os.O_WRONLY, 0600)
+	file, err := os.OpenFile("./output/sorted_"+*filename, os.O_CREATE|os.O_WRONLY, 0600)
 	if err != nil {
 		return err
 	}
