@@ -38,7 +38,6 @@ func parseFile(path string) (Context, error) {
 	}
 
 	bookScores := strings.Split(lines[1], " ")
-	fmt.Printf("BookScores: %#v\n", bookScores)
 	for i := range bookScores {
 		if bookScores[i] == "" {
 			return Context{}, fmt.Errorf("i:%d contains ''", i)
@@ -47,6 +46,10 @@ func parseFile(path string) (Context, error) {
 	libraries := make([]Library, nbLib)
 
 	for iLib := 0; iLib < len(lines[2:])/2; iLib++ {
+		if lines[2+(2*iLib)] == "" {
+			fmt.Printf("WARN: empty line %d\n", 2+(2*iLib))
+			continue
+		}
 		curLib := Library{}
 		booksArr := strings.Split(lines[2+(2*iLib)+1], " ")
 		libInfosArr := strings.Split(lines[2+(2*iLib)], " ")
@@ -69,13 +72,11 @@ func parseFile(path string) (Context, error) {
 		for iBook := 0; iBook < nbBooks; iBook++ {
 			id, err := strconv.Atoi(booksArr[iBook])
 			if err != nil {
-				fmt.Printf("id: %d\n", id)
 				return Context{}, err
 			}
 
 			score, err := strconv.Atoi(bookScores[id])
 			if err != nil {
-				fmt.Printf("id: %d\n", id)
 				return Context{}, err
 			}
 

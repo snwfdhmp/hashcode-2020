@@ -24,6 +24,7 @@ func (l *Library) BookValueSum(numberOfDays int) int {
 
 func (l *Library) Sort(books []int) {
 	unsortedBooks := make([]Book, 0)
+	junkBooks := make([]Book, 0)
 	// remove
 	for i := range l.Books {
 		present := false
@@ -34,6 +35,8 @@ func (l *Library) Sort(books []int) {
 		}
 		if !present {
 			unsortedBooks = append(unsortedBooks, l.Books[i])
+		} else {
+			junkBooks = append(junkBooks, l.Books[i])
 		}
 	}
 
@@ -42,11 +45,13 @@ func (l *Library) Sort(books []int) {
 		operationHappened = false
 		for i := 0; i < len(unsortedBooks); i++ {
 			for j := i; j < len(unsortedBooks); j++ {
-				if unsortedBooks[i].Score > unsortedBooks[j].Score {
+				if unsortedBooks[i].Score < unsortedBooks[j].Score {
 					unsortedBooks[i], unsortedBooks[j] = unsortedBooks[j], unsortedBooks[i]
 					operationHappened = true
 				}
 			}
 		}
 	}
+
+	l.Books = append(unsortedBooks, junkBooks...)
 }

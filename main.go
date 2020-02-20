@@ -16,10 +16,6 @@ func run() error {
 		return err
 	}
 
-	for i, v := range ctx.Libraries {
-		fmt.Printf("Lib %d: %d books\n", i, len(v.Books))
-	}
-
 	ctx.CreatePlan()
 
 	return nil
