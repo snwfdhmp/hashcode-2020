@@ -2,6 +2,11 @@ package main
 
 import (
 	"fmt"
+	"os"
+)
+
+var (
+	filename = "c_incunabula.txt"
 )
 
 func main() {
@@ -11,12 +16,16 @@ func main() {
 }
 
 func run() error {
-	ctx, err := parseFile("./input/b_read_on.txt")
+	ctx, err := parseFile("./input/" + filename)
 	if err != nil {
 		return err
 	}
 
-	ctx.CreatePlan()
+	plan := ctx.CreatePlan()
+	file, err := os.OpenFile("./output/sorted_"+filename, os.O_CREATE|os.O_WRONLY, 0600)
+	if err != nil {
+		return err
+	}
 
-	return nil
+	return plan.Write(file)
 }

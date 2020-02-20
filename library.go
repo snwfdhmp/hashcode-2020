@@ -6,17 +6,27 @@ type Book struct {
 }
 
 type Library struct {
+	ID          int
 	Books       []Book
 	SignupTime  int
 	BooksPerDay int
 }
 
-func (l *Library) BookValueSum(numberOfDays int) int {
+func (l *Library) BookValueSum(numberOfDays int, passedBooks []int) int {
 	numberOfDays -= l.SignupTime
 	sum := 0
 	for days := 0; days < numberOfDays; days++ {
 		for books := 0; books < l.BooksPerDay; books++ {
-			sum += l.Books[(l.BooksPerDay*days)+books].Score
+			curBook := l.BooksPerDay*days + books
+			if curBook >= len(l.Books) {
+				break
+			}
+			for i := range passedBooks {
+				if passedBooks[i] == l.Books[curBook].ID {
+					continue
+				}
+			}
+			sum += l.Books[curBook].Score
 		}
 	}
 	return sum

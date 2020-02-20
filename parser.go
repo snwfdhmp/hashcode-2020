@@ -85,6 +85,7 @@ func parseFile(path string) (Context, error) {
 				Score: score,
 			}
 		}
+		curLib.ID = iLib
 		libraries[iLib] = curLib
 	}
 
