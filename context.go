@@ -28,6 +28,12 @@ func (c *Context) CreatePlan() Plan {
 				maxSumI = i
 			}
 		}
+
+		fmt.Printf("\rProgress : %d/%d (%.1fs)", iSortedLibs+1, len(plan.SortedLibraries), time.Now().Sub(startTime).Seconds())
+		// if maxSum == 0 {
+		// 	break
+		// }
+
 		plan.SortedLibraries[iSortedLibs] = c.Libraries[maxSumI]
 		for i := range c.Libraries[maxSumI].Books {
 			passedBooks[c.Libraries[maxSumI].Books[i].ID] = true
@@ -38,11 +44,11 @@ func (c *Context) CreatePlan() Plan {
 		c.Libraries[len(c.Libraries)-1] = Library{}
 		maxSum = 0
 		maxSumI = 0
-		fmt.Printf("\rProgress : %d/%d (%.1fs)", iSortedLibs, len(plan.SortedLibraries), time.Now().Sub(startTime).Seconds())
 		// if iSortedLibs == 1000 {
 		// 	break
 		// }
 	}
+	fmt.Printf("\n")
 
 	return plan
 }

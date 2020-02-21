@@ -22,12 +22,19 @@ func (p *Plan) String() string {
 }
 
 func (p *Plan) Write(w io.Writer) error {
-	_, err := io.WriteString(w, fmt.Sprintf("%d\n", len(p.SortedLibraries)))
+	length := 0
+	for i := range p.SortedLibraries {
+		if len(p.SortedLibraries[i].Books) == 0 {
+			break
+		}
+		length += 1
+	}
+	_, err := io.WriteString(w, fmt.Sprintf("%d\n", length))
 	if err != nil {
 		return err
 	}
 
-	for i := range p.SortedLibraries {
+	for i := 0; i < length; i++ {
 		_, err = io.WriteString(w, fmt.Sprintf("%d %d\n", p.SortedLibraries[i].ID, len(p.SortedLibraries[i].Books)))
 		if err != nil {
 			return err
