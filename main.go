@@ -3,11 +3,14 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"os"
+	"runtime/pprof"
 )
 
 var (
-	filename = flag.String("file", "a_example.txt", "file")
+	filename   = flag.String("file", "a_example.txt", "file")
+	cpuprofile = flag.String("cpuprofile", "", "write cpu profile to file")
 )
 
 func init() {
@@ -15,6 +18,15 @@ func init() {
 }
 
 func main() {
+	if *cpuprofile != "" {
+		f, err := os.Create(*cpuprofile)
+		if err != nil {
+			log.Fatal(err)
+		}
+		pprof.StartCPUProfile(f)
+		defer pprof.StopCPUProfile()
+	}
+
 	if err := run(); err != nil {
 		fmt.Printf("fatal: %v\n", err)
 	}
