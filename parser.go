@@ -47,7 +47,9 @@ func parseFile(path string) (Context, error) {
 
 	for iLib := 0; iLib < len(lines[2:])/2; iLib++ {
 		if lines[2+(2*iLib)] == "" {
-			fmt.Printf("WARN: empty line %d\n", 2+(2*iLib))
+			if optEnableWarnings {
+				fmt.Printf("WARN: empty line %d\n", 2+(2*iLib))
+			}
 			continue
 		}
 		curLib := Library{}

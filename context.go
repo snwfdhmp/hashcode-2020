@@ -29,7 +29,7 @@ func (c *Context) CreatePlan() Plan {
 			}
 		}
 
-		fmt.Printf("\rProgress : %d/%d (%.1fs)", iSortedLibs+1, len(plan.SortedLibraries), time.Now().Sub(startTime).Seconds())
+		fmt.Printf("\rProgress : %d/%d (%dms)", iSortedLibs+1, len(plan.SortedLibraries), time.Now().Sub(startTime).Milliseconds())
 		// if maxSum == 0 {
 		// 	break
 		// }

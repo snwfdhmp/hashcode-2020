@@ -9,11 +9,11 @@ import (
 )
 
 var (
-	image      = flag.String("image", "", "image (a, b, c, d, e, f)")
+	inputfile  = flag.String("input", "", "inputfile (a, b, c, d, e, f)")
 	filename   = flag.String("file", "a_example.txt", "file")
 	cpuprofile = flag.String("cpuprofile", "", "write cpu profile to file")
 
-	images = map[string]string{
+	inputfiles = map[string]string{
 		"a": "a_example.txt",
 		"b": "b_read_on.txt",
 		"c": "c_incunabula.txt",
@@ -21,16 +21,18 @@ var (
 		"e": "e_so_many_books.txt",
 		"f": "f_libraries_of_the_world.txt",
 	}
+
+	optEnableWarnings = false
 )
 
 func init() {
 	flag.Parse()
 
-	if *image != "" {
+	if *inputfile != "" {
 		var ok bool
-		*filename, ok = images[*image]
+		*filename, ok = inputfiles[*inputfile]
 		if !ok {
-			fmt.Printf("fatal: image '%s' does not exist.\n", image)
+			fmt.Printf("fatal: inputfile '%s' does not exist.\n", inputfile)
 			os.Exit(1)
 		}
 	}
