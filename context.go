@@ -23,22 +23,17 @@ func (c *Context) CreatePlan() Plan {
 		for i := range c.Libraries {
 			c.Libraries[i].Sort()
 			sum := c.Libraries[i].BookValueSum(remainingDays)
-			rentability := float64(sum) / float64(max(c.Libraries[i].SignupTime+1, 1))
+			rentabilityCoef := 0.5
+			if c.Libraries[i].SignupTime > 0 {
+				rentabilityCoef = float64(c.Libraries[i].SignupTime)
+			}
+			rentability := float64(sum) / rentabilityCoef
 			// fmt.Printf("rentability: %.2f\n", rentability)
 			if rentability > maxRentability {
 				maxRentability = rentability
 				maxSum = sum
 				maxSumI = i
 			}
-		}
-
-		totalScore += maxSum
-		// fmt.Printf("\nSum: %d\n", maxSum)
-		if iSortedLibs%9 == 0 {
-			fmt.Printf("\rProgress : %d/%d (%dms) (current score: %d)", iSortedLibs+1, len(plan.SortedLibraries), time.Now().Sub(startTime).Milliseconds(), totalScore)
-		}
-		if maxSum == 0 {
-			break
 		}
 
 		plan.SortedLibraries[iSortedLibs] = c.Libraries[maxSumI]
@@ -50,6 +45,16 @@ func (c *Context) CreatePlan() Plan {
 				c.Libraries[j].SetBookAsUsed(c.Libraries[maxSumI].Books[i].ID)
 			}
 		}
+
+		totalScore += maxSum
+		// fmt.Printf("\nSum: %d\n", maxSum)
+		if iSortedLibs%9 == 0 || maxSum == 0 {
+			fmt.Printf("\rProgress : %d/%d (%dms) (current score: %d)", iSortedLibs+1, len(plan.SortedLibraries), time.Now().Sub(startTime).Milliseconds(), totalScore)
+		}
+		if maxSum == 0 {
+			break
+		}
+
 		remainingDays -= c.Libraries[maxSumI].SignupTime
 		c.Libraries[maxSumI] = c.Libraries[len(c.Libraries)-1]
 		c.Libraries = c.Libraries[:len(c.Libraries)-1]

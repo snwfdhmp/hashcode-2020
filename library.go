@@ -38,10 +38,16 @@ func (l *Library) Sort() {
 }
 
 func (l *Library) SetBookAsUsed(id int) {
+	usedCount := 0
 	for i := 0; i < len(l.Books); i++ {
 		if l.Books[i].ID == id {
 			l.Books[i] = l.Books[len(l.Books)-1]
 			l.Books = l.Books[:len(l.Books)-1]
+			break
+			usedCount++
+			if usedCount > 1 {
+				panic("usedCount > 1")
+			}
 		}
 	}
 }
