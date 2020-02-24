@@ -14,7 +14,7 @@ type Library struct {
 	BooksPerDay int
 }
 
-func (l *Library) BookValueSum(numberOfDays int, passedBooks map[int]bool) int {
+func (l *Library) BookValueSum(numberOfDays int) int {
 	numberOfDays -= l.SignupTime
 	sum := 0
 	for i := 0; i < l.BooksPerDay*numberOfDays && i < len(l.Books); i++ {
@@ -24,7 +24,7 @@ func (l *Library) BookValueSum(numberOfDays int, passedBooks map[int]bool) int {
 	return sum
 }
 
-func (l *Library) Sort(books map[int]bool) {
+func (l *Library) Sort() {
 	operationHappened := true
 	for operationHappened == true {
 		operationHappened = false

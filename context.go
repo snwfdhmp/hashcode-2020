@@ -13,23 +13,21 @@ type Context struct {
 func (c *Context) CreatePlan() Plan {
 	plan := Plan{}
 	plan.SortedLibraries = make([]Library, len(c.Libraries))
-	passedBooks := make(map[int]bool, 0) //id of books
-	libSums := make([]int, len(c.Libraries))
-	maxSum := 0
-	maxRentability := 0.0
 	totalScore := 0
-	maxSumI := 0
 	remainingDays := c.DayMax
 	for iSortedLibs := 0; iSortedLibs < len(c.Libraries); iSortedLibs++ {
 		startTime := time.Now()
+		maxRentability := 0.0
+		maxSum := 0
+		maxSumI := 0
 		for i := range c.Libraries {
-			c.Libraries[i].Sort(passedBooks)
-			libSums[i] = c.Libraries[i].BookValueSum(remainingDays, passedBooks)
-			rentability := float64(libSums[i]) / float64(max(c.Libraries[i].SignupTime+1, 1))
+			c.Libraries[i].Sort()
+			sum := c.Libraries[i].BookValueSum(remainingDays)
+			rentability := float64(sum) / float64(max(c.Libraries[i].SignupTime+1, 1))
 			// fmt.Printf("rentability: %.2f\n", rentability)
 			if rentability > maxRentability {
 				maxRentability = rentability
-				maxSum = libSums[i]
+				maxSum = sum
 				maxSumI = i
 			}
 		}
@@ -55,9 +53,6 @@ func (c *Context) CreatePlan() Plan {
 		remainingDays -= c.Libraries[maxSumI].SignupTime
 		c.Libraries[maxSumI] = c.Libraries[len(c.Libraries)-1]
 		c.Libraries = c.Libraries[:len(c.Libraries)-1]
-		maxSum = 0
-		maxRentability = 0
-		maxSumI = 0
 		// if iSortedLibs == 1000 {
 		// 	break
 		// }
