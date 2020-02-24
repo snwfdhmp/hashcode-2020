@@ -60,7 +60,7 @@ func parseFile(path string) (Context, error) {
 			return Context{}, err
 		}
 
-		curLib.SignupTime, err = strconv.Atoi(libInfosArr[0])
+		curLib.SignupTime, err = strconv.Atoi(libInfosArr[1])
 		if err != nil {
 			return Context{}, err
 		}
