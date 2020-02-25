@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	// "math"
 	"time"
 )
 
@@ -23,9 +24,9 @@ func (c *Context) CreatePlan() Plan {
 		for i := range c.Libraries {
 			c.Libraries[i].Sort()
 			sum := c.Libraries[i].BookValueSum(remainingDays)
-			rentabilityCoef := 0.5
+			rentabilityCoef := 0.00000001
 			if c.Libraries[i].SignupTime > 0 {
-				rentabilityCoef = float64(c.Libraries[i].SignupTime)
+				rentabilityCoef = float64(c.Libraries[i].SignupTime) / float64(remainingDays)
 			}
 			rentability := float64(sum) / rentabilityCoef
 			// fmt.Printf("rentability: %.2f\n", rentability)

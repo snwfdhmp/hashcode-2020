@@ -36,6 +36,7 @@ func parseFile(path string) (Context, error) {
 	if err != nil {
 		return Context{}, err
 	}
+	// maxDays = maxDays + 1
 
 	bookScores := strings.Split(lines[1], " ")
 	for i := range bookScores {
